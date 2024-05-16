@@ -34,7 +34,7 @@ public class GameBoard {
             nextRow += 1;
         }
         if (nextRow == gridSize) {
-            return true; // Board is fully generated
+            return true;
         }
 
         int[] numbers = getRandomNumbers(gridSize);
@@ -44,7 +44,7 @@ public class GameBoard {
                 if (generateBoard(nextRow, nextCol)) {
                     return true;
                 }
-                board[row][col] = 0; // Backtrack
+                board[row][col] = 0;
             }
         }
         return false;
@@ -113,9 +113,9 @@ public class GameBoard {
 
     private int getCellsToRemove(Difficulty difficulty) {
         return switch (difficulty) {
-            case EASY -> gridSize * gridSize / 4;  // Remove fewer cells
-            case NORMAL -> gridSize * gridSize / 2;  // Remove more cells
-            case HARD -> gridSize * gridSize * 3 / 4;  // Remove most cells
+            case EASY -> gridSize * gridSize / 4;
+            case NORMAL -> gridSize * gridSize / 2;
+            case HARD -> gridSize * gridSize * 3 / 4;
         };
     }
 

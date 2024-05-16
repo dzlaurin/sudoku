@@ -4,10 +4,11 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
-        GameManager gameManager = new GameManager(); // Make sure GameManager can interact properly with this UI
-        UserInterface ui = new UserInterface(gameManager);
+        UserInterface ui = new UserInterface();
+        GameManager gameManager = new GameManager(ui);
+        ui.setGameManager(gameManager);
         try {
-            ui.run();
+            ui.start();
         } catch (IOException e) {
             e.printStackTrace();
         }

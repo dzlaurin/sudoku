@@ -4,66 +4,47 @@ import java.io.IOException;
 
 public class GameManager {
     private GameBoard gameBoard;
-    private ScoreManager scoreManager;
     private final UserInterface userInterface;
-
     private boolean gameOver = false;
 
-    public GameManager() {
-        this.userInterface = new UserInterface(this);
+    public GameManager(UserInterface userInterface) {
+        this.userInterface = userInterface;
     }
 
     public GameBoard getGameBoard() {
         return gameBoard;
     }
 
-    public void startGame() throws IOException {
-        // Get user settings
-        int gridSize = userInterface.getGridSizeFromUser();
-        Difficulty difficulty = userInterface.getDifficultyFromUser();
-
-        // Initialize game components
+    public void startGame(int gridSize, Difficulty difficulty) {
         this.gameBoard = new GameBoard(gridSize, difficulty);
-        this.scoreManager = new ScoreManager(difficulty);
-
-        // Game loop
-        while (!gameOver) {
-            userInterface.displayBoard(gameBoard);
-            int[] move = userInterface.getUserMove();
-            processMove(move);
-            gameOver = gameBoard.isComplete();
-        }
-
-        // Game completion
-        scoreManager.gameCompleted();
-        userInterface.displayEndGameMessage(scoreManager.getCurrentScore());
-        offerRestart();
+        userInterface.displayBoard(gameBoard);
     }
 
-    private void processMove(int[] move) throws IOException {
+    public void processMove(int[] move) throws IOException {
         if (gameBoard.isValidMove(move[0], move[1], move[2])) {
             gameBoard.makeMove(move[0], move[1], move[2]);
-            scoreManager.correctEntry();
         } else {
-            scoreManager.incorrectEntry();
+            System.out.println("Invalid move. Try again.");
         }
         userInterface.displayBoard(gameBoard);
     }
 
     public int getScore() {
-        return scoreManager.getCurrentScore();
+        return 0;
+    }
+
+    public void checkGameStatus() throws IOException {
+        if (gameBoard.isComplete()) {
+            System.out.println("Congratulations! You completed the board.");
+            offerRestart();
+        }
     }
 
     private void offerRestart() throws IOException {
         if (userInterface.promptForRestart()) {
-            restartGame();
+            userInterface.start();
         } else {
             System.exit(0);
         }
-    }
-
-    private void restartGame() throws IOException {
-        gameOver = false;
-        startGame();
     }
 }

@@ -17,6 +17,7 @@ public class UserInterface {
 
     public void displayBoard(GameBoard board) {
         System.out.println(board);
+        System.out.println("Current score: " + gameManager.getScore());
     }
 
     public void start() throws IOException {
@@ -68,20 +69,24 @@ public class UserInterface {
 
     public void run() throws IOException {
         while (!gameManager.getGameBoard().isComplete()) {
-            int[] move = getMoveFromUser();
-            gameManager.processMove(move);
-            gameManager.checkGameStatus();
+            System.out.println("Enter your move (format: row col number) or type 'hint' for a hint:");
+            String input = scanner.next();
+            if (input.equalsIgnoreCase("hint")) {
+                int[] hint = gameManager.getHint();
+                if (hint != null) {
+                    System.out.println("Hint: place " + hint[2] + " at (" + (hint[0] + 1) + ", " + (hint[1] + 1) + ")");
+                } else {
+                    System.out.println("No hints available.");
+                }
+            } else {
+                int row = Integer.parseInt(input) - 1;
+                int col = scanner.nextInt() - 1;
+                int num = scanner.nextInt();
+                int[] move = new int[]{row, col, num};
+                gameManager.processMove(move);
+                gameManager.checkGameStatus();
+            }
         }
-    }
-
-    private int[] getMoveFromUser() {
-        System.out.println("Enter the row:");
-        int row = scanner.nextInt() - 1;
-        System.out.println("Enter the column:");
-        int col = scanner.nextInt() - 1;
-        System.out.println("Enter the number:");
-        int num = scanner.nextInt();
-        return new int[]{row, col, num};
     }
 
     public boolean promptForRestart() {

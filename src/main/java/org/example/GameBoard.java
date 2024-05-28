@@ -65,7 +65,13 @@ public class GameBoard {
     }
 
     private boolean isSafe(int row, int col, int num) {
-        return !isInRow(row, num) && !isInCol(col, num) && !isInSubgrid(row, col, num);
+        if (isInRow(row, num) || isInCol(col, num) || isInSubgrid(row, col, num))
+        {
+            return false;
+        }
+        else {
+            return true;
+        }
     }
 
     private boolean isInRow(int row, int num) {
@@ -130,7 +136,7 @@ public class GameBoard {
     public boolean isComplete() {
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
-                if (board[i][j] == 0 || !isSafe(i, j, board[i][j])) {
+                if (board[i][j] == 0) {
                     return false;
                 }
             }

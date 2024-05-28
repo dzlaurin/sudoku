@@ -57,6 +57,7 @@ public class GameManager {
     }
 
     public int[] getHint() {
+        scoreManager.hintUsed();
         return hintSystem.getHint();
     }
 }

@@ -17,6 +17,14 @@ public class ScoreManager {
         }
     }
 
+    public void hintUsed() {
+        switch (difficulty) {
+            case EASY -> score -= 10;
+            case NORMAL -> score -= 20;
+            case HARD -> score -= 30;
+        }
+    }
+
     public void incorrectEntry() {
         switch (difficulty) {
             case EASY -> score -= 5;
